@@ -1,0 +1,17 @@
+
+### ingest
+POST http://localhost:8000/ingest
+Content-Type: application/json
+
+{
+    "status": "added",
+    "text": "O curso de PLN ensina técnicas de processamento de linguagem natural e uso de modelos de IA como LLMs para chatbots."
+}
+
+### ask
+POST http://localhost:8000/ask
+Content-Type: application/json
+
+{
+    "question": "O que é o curso de PLN?"
+}
