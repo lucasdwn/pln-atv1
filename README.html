@@ -1,8 +1,8 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot RAG - Grade Curricular DSM</title>
     <style>
         @media print {
@@ -15,162 +15,322 @@
                 print-color-adjust: exact;
             }
         }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            line-height: 1.6;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            line-height: 1.7;
             color: #333;
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
             background-color: #fff;
         }
+        
         h1 {
             color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-            margin-top: 30px;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+            margin: 40px 0 30px 0;
+            font-size: 2.5em;
         }
+        
+        h1:first-child {
+            margin-top: 0;
+        }
+        
         h2 {
             color: #34495e;
-            border-bottom: 2px solid #95a5a6;
-            padding-bottom: 8px;
-            margin-top: 25px;
+            border-bottom: 3px solid #95a5a6;
+            padding-bottom: 10px;
+            margin: 35px 0 20px 0;
+            font-size: 1.8em;
         }
+        
         h3 {
             color: #2c3e50;
-            margin-top: 20px;
+            margin: 25px 0 15px 0;
+            font-size: 1.3em;
         }
+        
+        p {
+            margin: 12px 0;
+            text-align: justify;
+        }
+        
         code {
             background-color: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Consolas', 'Monaco', monospace;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             font-size: 0.9em;
+            color: #e74c3c;
         }
+        
         pre {
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-left: 4px solid #3498db;
             border-radius: 5px;
-            padding: 15px;
+            padding: 20px;
             overflow-x: auto;
+            margin: 20px 0;
             page-break-inside: avoid;
         }
+        
         pre code {
             background-color: transparent;
             padding: 0;
+            color: #2c3e50;
+            font-size: 0.85em;
+            line-height: 1.5;
         }
+        
         ul, ol {
-            margin-left: 20px;
+            margin: 15px 0 15px 30px;
         }
+        
         li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            line-height: 1.6;
         }
-        blockquote {
-            border-left: 4px solid #3498db;
-            padding-left: 15px;
-            margin: 15px 0;
-            color: #555;
-            font-style: italic;
+        
+        strong {
+            color: #2c3e50;
+            font-weight: 600;
         }
+        
         hr {
             border: none;
             border-top: 2px solid #ecf0f1;
-            margin: 30px 0;
+            margin: 40px 0;
         }
-        strong {
-            color: #2c3e50;
-        }
+        
         a {
             color: #3498db;
             text-decoration: none;
+            font-weight: 500;
         }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 20px 0;
+        
+        a:hover {
+            text-decoration: underline;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
+        
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px 30px;
+            margin: 30px 0;
+            border-radius: 5px;
         }
-        th {
+        
+        .toc ul {
+            list-style: none;
+            margin: 10px 0;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
             background-color: #3498db;
             color: white;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-right: 5px;
+        }
+        
+        .section {
+            margin: 30px 0;
+        }
+        
+        .code-title {
+            background-color: #34495e;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px 5px 0 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9em;
+            margin-bottom: -1px;
+        }
+        
+        .interaction {
+            background-color: #f8f9fa;
+            border-left: 4px solid #27ae60;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .interaction p {
+            margin: 10px 0;
+        }
+        
+        .user-question {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .bot-answer {
+            color: #555;
+            margin-left: 20px;
+        }
+        
+        .evidence {
+            margin: 30px 0;
+            page-break-inside: avoid;
+        }
+        
+        .evidence h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .evidence img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .tech-list {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.9em;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <h1 id="chatbot-rag-grade-curricular-dsm">Chatbot RAG - Grade Curricular DSM</h1>
-<p>Sistema de chatbot inteligente com RAG (Retrieval-Augmented Generation) para responder perguntas sobre a grade curricular do curso de Desenvolvimento de Software Multiplataforma (DSM).</p>
-<h2 id="indice">📋 Índice</h2>
-<ul>
-<li><a href="#sobre-o-projeto">Sobre o Projeto</a></li>
-<li><a href="#modelo-de-linguagem-llm">Modelo de Linguagem (LLM)</a></li>
-<li><a href="#implementação-do-rag">Implementação do RAG</a></li>
-<li><a href="#limitações">Limitações</a></li>
-<li><a href="#como-rodar-o-projeto">Como Rodar o Projeto</a></li>
-<li><a href="#como-utilizar">Como Utilizar</a></li>
-<li><a href="#exemplo-de-diálogo">Exemplo de Diálogo</a></li>
-<li><a href="#evidências">Evidências</a></li>
-</ul>
-<hr />
-<h2 id="sobre-o-projeto">🎯 Sobre o Projeto</h2>
-<p>Este projeto implementa um chatbot baseado em RAG (Retrieval-Augmented Generation) que utiliza:
-- <strong>LLM local</strong>: Google Flan-T5 Large para geração de respostas
-- <strong>Embeddings</strong>: sentence-transformers para busca semântica
-- <strong>Banco vetorial</strong>: FAISS para indexação e recuperação eficiente
-- <strong>API REST</strong>: FastAPI para interface de comunicação</p>
-<p>O sistema carrega automaticamente a base de conhecimento sobre a grade DSM e responde perguntas de forma contextualizada.</p>
-<hr />
-<h2 id="modelo-de-linguagem-llm">🤖 Modelo de Linguagem (LLM)</h2>
-<h3 id="modelo-escolhido-google-flan-t5-large">Modelo Escolhido: <strong>Google Flan-T5 Large</strong></h3>
-<p><strong>Por que Flan-T5?</strong></p>
-<ol>
-<li><strong>Gratuito e Open Source</strong>: Totalmente gratuito, sem custos de API</li>
-<li><strong>Execução Local</strong>: Roda localmente, garantindo privacidade dos dados</li>
-<li><strong>Otimizado para Instruções</strong>: Treinado especificamente para seguir instruções (instruction-tuned)</li>
-<li><strong>Tamanho Balanceado</strong>: 780M parâmetros - bom equilíbrio entre qualidade e performance</li>
-<li><strong>Multilíngue</strong>: Suporta português, ideal para conteúdo em PT-BR</li>
-<li><strong>Baixa Latência</strong>: Respostas rápidas mesmo em hardware comum</li>
-</ol>
-<p><strong>Especificações Técnicas:</strong>
-- <strong>Arquitetura</strong>: Transformer encoder-decoder (T5)
-- <strong>Parâmetros</strong>: 780 milhões
-- <strong>Contexto</strong>: Até 512 tokens de entrada
-- <strong>Framework</strong>: Hugging Face Transformers + PyTorch</p>
-<hr />
-<h2 id="implementacao-do-rag">🔍 Implementação do RAG</h2>
-<p>O sistema RAG (Retrieval-Augmented Generation) foi implementado em 3 etapas:</p>
-<h3 id="1-indexacao-pre-ingest-automatico">1. <strong>Indexação (Pré-ingest Automático)</strong></h3>
-<p>Na inicialização, o sistema:
-- Carrega o arquivo <code>dsm_data.txt</code> com a grade curricular
-- Divide o conteúdo em chunks inteligentes:
-  - Seções por semestre (1º, 2º, 3º)
-  - Disciplinas individuais com descrições
-- Gera embeddings usando <code>sentence-transformers/all-MiniLM-L6-v2</code>
-- Indexa no FAISS (IndexFlatIP com inner product)</p>
-<pre><code class="language-python"># Exemplo simplificado
+    <h1>Chatbot RAG - Grade Curricular DSM</h1>
+    
+    <p>Sistema de chatbot inteligente com RAG (Retrieval-Augmented Generation) para responder perguntas sobre a grade curricular do curso de Desenvolvimento de Software Multiplataforma (DSM).</p>
+    
+    <div class="toc">
+        <h2>📋 Índice</h2>
+        <ul>
+            <li><a href="#sobre">Sobre o Projeto</a></li>
+            <li><a href="#modelo">Modelo de Linguagem (LLM)</a></li>
+            <li><a href="#rag">Implementação do RAG</a></li>
+            <li><a href="#limitacoes">Limitações</a></li>
+            <li><a href="#rodar">Como Rodar o Projeto</a></li>
+            <li><a href="#utilizar">Como Utilizar</a></li>
+            <li><a href="#dialogo">Exemplo de Diálogo</a></li>
+            <li><a href="#evidencias">Evidências</a></li>
+        </ul>
+    </div>
+    
+    <hr>
+    
+    <section id="sobre" class="section">
+        <h2>🎯 Sobre o Projeto</h2>
+        <p>Este projeto implementa um chatbot baseado em RAG (Retrieval-Augmented Generation) que utiliza:</p>
+        <ul>
+            <li><strong>LLM local</strong>: Google Flan-T5 Large para geração de respostas</li>
+            <li><strong>Embeddings</strong>: sentence-transformers para busca semântica</li>
+            <li><strong>Banco vetorial</strong>: FAISS para indexação e recuperação eficiente</li>
+            <li><strong>API REST</strong>: FastAPI para interface de comunicação</li>
+        </ul>
+        <p>O sistema carrega automaticamente a base de conhecimento sobre a grade DSM e responde perguntas de forma contextualizada.</p>
+    </section>
+    
+    <hr>
+    
+    <section id="modelo" class="section">
+        <h2>🤖 Modelo de Linguagem (LLM)</h2>
+        
+        <h3>Modelo Escolhido: <strong>Google Flan-T5 Large</strong></h3>
+        
+        <h3>Por que Flan-T5?</h3>
+        <ol>
+            <li><strong>Gratuito e Open Source</strong>: Totalmente gratuito, sem custos de API</li>
+            <li><strong>Execução Local</strong>: Roda localmente, garantindo privacidade dos dados</li>
+            <li><strong>Otimizado para Instruções</strong>: Treinado especificamente para seguir instruções (instruction-tuned)</li>
+            <li><strong>Tamanho Balanceado</strong>: 780M parâmetros - bom equilíbrio entre qualidade e performance</li>
+            <li><strong>Multilíngue</strong>: Suporta português, ideal para conteúdo em PT-BR</li>
+            <li><strong>Baixa Latência</strong>: Respostas rápidas mesmo em hardware comum</li>
+        </ol>
+        
+        <h3>Especificações Técnicas:</h3>
+        <ul>
+            <li><strong>Arquitetura</strong>: Transformer encoder-decoder (T5)</li>
+            <li><strong>Parâmetros</strong>: 780 milhões</li>
+            <li><strong>Contexto</strong>: Até 512 tokens de entrada</li>
+            <li><strong>Framework</strong>: Hugging Face Transformers + PyTorch</li>
+        </ul>
+    </section>
+    
+    <hr>
+    
+    <section id="rag" class="section">
+        <h2>🔍 Implementação do RAG</h2>
+        <p>O sistema RAG (Retrieval-Augmented Generation) foi implementado em 3 etapas:</p>
+        
+        <h3>1. Indexação (Pré-ingest Automático)</h3>
+        <p>Na inicialização, o sistema:</p>
+        <ul>
+            <li>Carrega o arquivo <code>dsm_data.txt</code> com a grade curricular</li>
+            <li>Divide o conteúdo em chunks inteligentes:
+                <ul>
+                    <li>Seções por semestre (1º, 2º, 3º)</li>
+                    <li>Disciplinas individuais com descrições</li>
+                </ul>
+            </li>
+            <li>Gera embeddings usando <code>sentence-transformers/all-MiniLM-L6-v2</code></li>
+            <li>Indexa no FAISS (IndexFlatIP com inner product)</li>
+        </ul>
+        
+        <div class="code-title">Python</div>
+        <pre><code># Exemplo simplificado
 vec = embedder.encode([chunk], normalize_embeddings=True)
 index.add(vec)
-documents.append(chunk)
-</code></pre>
-<h3 id="2-recuperacao-retrieval">2. <strong>Recuperação (Retrieval)</strong></h3>
-<p>Quando uma pergunta chega:
-- Converte a pergunta em embedding vetorial
-- Busca no FAISS o documento mais similar (k=1)
-- Recupera o contexto relevante da base de conhecimento</p>
-<pre><code class="language-python">q_vec = embedder.encode([question], normalize_embeddings=True)
+documents.append(chunk)</code></pre>
+        
+        <h3>2. Recuperação (Retrieval)</h3>
+        <p>Quando uma pergunta chega:</p>
+        <ul>
+            <li>Converte a pergunta em embedding vetorial</li>
+            <li>Busca no FAISS o documento mais similar (k=1)</li>
+            <li>Recupera o contexto relevante da base de conhecimento</li>
+        </ul>
+        
+        <div class="code-title">Python</div>
+        <pre><code>q_vec = embedder.encode([question], normalize_embeddings=True)
 D, I = index.search(q_vec, 1)  # Top-1 similar
-context = documents[I[0][0]]
-</code></pre>
-<h3 id="3-geracao-augmented-generation">3. <strong>Geração (Augmented Generation)</strong></h3>
-<ul>
-<li>Monta um prompt estruturado com contexto + pergunta</li>
-<li>Envia para o Flan-T5 Large</li>
-<li>Gera resposta contextualizada baseada no conhecimento recuperado</li>
-</ul>
-<pre><code class="language-python">prompt = f&quot;&quot;&quot;Use o contexto abaixo para responder à pergunta de forma clara e direta.
+context = documents[I[0][0]]</code></pre>
+        
+        <h3>3. Geração (Augmented Generation)</h3>
+        <ul>
+            <li>Monta um prompt estruturado com contexto + pergunta</li>
+            <li>Envia para o Flan-T5 Large</li>
+            <li>Gera resposta contextualizada baseada no conhecimento recuperado</li>
+        </ul>
+        
+        <div class="code-title">Python</div>
+        <pre><code>prompt = f"""Use o contexto abaixo para responder à pergunta de forma clara e direta.
 
 Contexto:
 {context}
@@ -178,141 +338,229 @@ Contexto:
 Pergunta:
 {question}
 
-Resposta:&quot;&quot;&quot;
-</code></pre>
-<p><strong>Parâmetros de Geração:</strong>
-- <code>max_new_tokens=200</code>: Respostas concisas
-- <code>temperature=0.7</code>: Equilíbrio entre criatividade e precisão
-- <code>top_p=0.9</code>: Nucleus sampling para qualidade</p>
-<hr />
-<h2 id="limitacoes">⚠️ Limitações</h2>
-<h3 id="1-capacidade-do-modelo">1. <strong>Capacidade do Modelo</strong></h3>
-<ul>
-<li>Flan-T5 Large tem 780M parâmetros (menor que GPT-3.5/GPT-4)</li>
-<li>Pode gerar respostas menos sofisticadas em perguntas complexas</li>
-<li>Limitado a 512 tokens de contexto</li>
-</ul>
-<h3 id="2-busca-vetorial">2. <strong>Busca Vetorial</strong></h3>
-<ul>
-<li>Recupera apenas 1 documento (k=1) por consulta</li>
-<li>Pode perder informações relevantes em outros chunks</li>
-<li>Não faz fusão de múltiplas fontes</li>
-</ul>
-<h3 id="3-base-de-conhecimento">3. <strong>Base de Conhecimento</strong></h3>
-<ul>
-<li>Limitada às informações no <code>dsm_data.txt</code></li>
-<li>Não tem conhecimento além da grade curricular fornecida</li>
-<li>Não se atualiza automaticamente</li>
-</ul>
-<h3 id="4-performance">4. <strong>Performance</strong></h3>
-<ul>
-<li>Primeira execução baixa modelos (~3GB) - pode demorar</li>
-<li>Requer pelo menos 4GB de RAM disponível</li>
-<li>CPU-only pode ser lento (GPU recomendada)</li>
-</ul>
-<h3 id="5-idioma">5. <strong>Idioma</strong></h3>
-<ul>
-<li>Apesar de multilíngue, pode misturar inglês/português ocasionalmente</li>
-<li>Melhor desempenho em inglês que português</li>
-</ul>
-<h3 id="6-escalabilidade">6. <strong>Escalabilidade</strong></h3>
-<ul>
-<li>FAISS em memória - perde dados ao reiniciar</li>
-<li>Não persiste o índice vetorial</li>
-<li>Não suporta múltiplos usuários concorrentes eficientemente</li>
-</ul>
-<hr />
-<h2 id="como-rodar-o-projeto">🚀 Como Rodar o Projeto</h2>
-<h3 id="1-criar-ambiente-virtual">1. Criar Ambiente Virtual</h3>
-<pre><code class="language-powershell"># Criar ambiente virtual
+Resposta:"""</code></pre>
+        
+        <h3>Parâmetros de Geração:</h3>
+        <ul>
+            <li><code>max_new_tokens=200</code>: Respostas concisas</li>
+            <li><code>temperature=0.7</code>: Equilíbrio entre criatividade e precisão</li>
+            <li><code>top_p=0.9</code>: Nucleus sampling para qualidade</li>
+        </ul>
+    </section>
+    
+    <hr>
+    
+    <section id="limitacoes" class="section">
+        <h2>⚠️ Limitações</h2>
+        
+        <h3>1. Capacidade do Modelo</h3>
+        <ul>
+            <li>Flan-T5 Large tem 780M parâmetros (menor que GPT-3.5/GPT-4)</li>
+            <li>Pode gerar respostas menos sofisticadas em perguntas complexas</li>
+            <li>Limitado a 512 tokens de contexto</li>
+        </ul>
+        
+        <h3>2. Busca Vetorial</h3>
+        <ul>
+            <li>Recupera apenas 1 documento (k=1) por consulta</li>
+            <li>Pode perder informações relevantes em outros chunks</li>
+            <li>Não faz fusão de múltiplas fontes</li>
+        </ul>
+        
+        <h3>3. Base de Conhecimento</h3>
+        <ul>
+            <li>Limitada às informações no <code>dsm_data.txt</code></li>
+            <li>Não tem conhecimento além da grade curricular fornecida</li>
+            <li>Não se atualiza automaticamente</li>
+        </ul>
+        
+        <h3>4. Performance</h3>
+        <ul>
+            <li>Primeira execução baixa modelos (~3GB) - pode demorar</li>
+            <li>Requer pelo menos 4GB de RAM disponível</li>
+            <li>CPU-only pode ser lento (GPU recomendada)</li>
+        </ul>
+        
+        <h3>5. Idioma</h3>
+        <ul>
+            <li>Apesar de multilíngue, pode misturar inglês/português ocasionalmente</li>
+            <li>Melhor desempenho em inglês que português</li>
+        </ul>
+        
+        <h3>6. Escalabilidade</h3>
+        <ul>
+            <li>FAISS em memória - perde dados ao reiniciar</li>
+            <li>Não persiste o índice vetorial</li>
+            <li>Não suporta múltiplos usuários concorrentes eficientemente</li>
+        </ul>
+    </section>
+    
+    <hr>
+    
+    <section id="rodar" class="section">
+        <h2>🚀 Como Rodar o Projeto</h2>
+        
+        <h3>1. Criar Ambiente Virtual</h3>
+        <div class="code-title">PowerShell</div>
+        <pre><code># Criar ambiente virtual
 python -m venv .venv
 
 # Ativar ambiente
-.venv\Scripts\activate    # Windows (PowerShell)
-</code></pre>
-<h3 id="2-instalar-dependencias">2. Instalar Dependências</h3>
-<pre><code class="language-powershell">pip install -r requirements.txt
-</code></pre>
-<p><strong>Nota</strong>: A primeira execução baixará os modelos (~3GB). Aguarde a conclusão.</p>
-<h3 id="3-rodar-aplicacao">3. Rodar Aplicação</h3>
-<pre><code class="language-powershell">uvicorn app:app --reload --port 8000
-</code></pre>
-<p>Você verá as mensagens:</p>
-<pre><code>🔄 Carregando modelo...
+.venv\Scripts\activate    # Windows (PowerShell)</code></pre>
+        
+        <h3>2. Instalar Dependências</h3>
+        <div class="code-title">PowerShell</div>
+        <pre><code>pip install -r requirements.txt</code></pre>
+        <p><strong>Nota</strong>: A primeira execução baixará os modelos (~3GB). Aguarde a conclusão.</p>
+        
+        <h3>3. Rodar Aplicação</h3>
+        <div class="code-title">PowerShell</div>
+        <pre><code>uvicorn app:app --reload --port 8000</code></pre>
+        
+        <p>Você verá as mensagens:</p>
+        <pre><code>🔄 Carregando modelo...
 📚 Carregando dados do arquivo dsm_data.txt...
-✅ Pré-ingest concluído! X documentos indexados.
-</code></pre>
-<p>A API estará disponível em: <code>http://localhost:8000</code></p>
-<hr />
-<h2 id="como-utilizar">💡 Como Utilizar</h2>
-<h3 id="fazer-perguntas-endpoint-ask">Fazer Perguntas (Endpoint /ask)</h3>
-<p>O sistema já vem com a base DSM pré-carregada. Basta fazer perguntas!</p>
-<p><strong>Exemplo de requisição:</strong></p>
-<pre><code class="language-http">POST http://localhost:8000/ask
-Content-Type: application/json
-
-{
-    &quot;question&quot;: &quot;Quais são as disciplinas do 1º semestre?&quot;
-}
-</code></pre>
-<p><strong>Mais exemplos estão disponíveis no arquivo <code>request.http</code></strong></p>
-<h3 id="adicionar-novos-dados-endpoint-ingest-opcional">Adicionar Novos Dados (Endpoint /ingest) - Opcional</h3>
-<p>Caso queira adicionar informações adicionais:</p>
-<pre><code class="language-http">POST http://localhost:8000/ingest
-Content-Type: application/json
-
-{
-    &quot;text&quot;: &quot;Texto adicional sobre o curso DSM...&quot;
-}
-</code></pre>
-<h3 id="verificar-status-endpoint-health">Verificar Status (Endpoint /health)</h3>
-<pre><code class="language-http">GET http://localhost:8000/health
-</code></pre>
-<hr />
-<h2 id="exemplo-de-dialogo-5-interacoes">💬 Exemplo de Diálogo (5 Interações)</h2>
-<h3 id="interacao-1"><strong>Interação 1</strong></h3>
-<p><strong>Usuário</strong>: "Quais são as disciplinas do 1º semestre do curso DSM?"</p>
-<p><strong>Chatbot</strong>: "O 1º semestre do curso DSM possui 6 disciplinas: IAL010 – Algoritmos e Lógica de Programação, ISO011 – Sistemas Operacionais e Redes de Computadores, IBD014 – Modelagem de Banco de Dados, ISW028 – Desenvolvimento Web I, IES011 – Engenharia de Software I, e ISW031 – Design Digital."</p>
-<hr />
-<h3 id="interacao-2"><strong>Interação 2</strong></h3>
-<p><strong>Usuário</strong>: "O que é ensinado em Algoritmos e Lógica de Programação?"</p>
-<p><strong>Chatbot</strong>: "IAL010 – Algoritmos e Lógica de Programação é a disciplina fundamental que ensina os conceitos básicos de algoritmos, estruturas de controle, variáveis e lógica de programação. É a base para o desenvolvimento de software no curso."</p>
-<hr />
-<h3 id="interacao-3"><strong>Interação 3</strong></h3>
-<p><strong>Usuário</strong>: "Quais disciplinas de banco de dados tem no curso?"</p>
-<p><strong>Chatbot</strong>: "O curso DSM possui três disciplinas de banco de dados: IBD014 – Modelagem de Banco de Dados no 1º semestre, que ensina diagrama entidade-relacionamento e normalização; IBD015 – Banco de Dados Relacional no 2º semestre, focado em SQL e PostgreSQL; e IBD016 – Banco de Dados Não Relacional no 3º semestre, que estuda MongoDB e bancos NoSQL."</p>
-<hr />
-<h3 id="interacao-4"><strong>Interação 4</strong></h3>
-<p><strong>Usuário</strong>: "O que é estudado em Desenvolvimento Web II?"</p>
-<p><strong>Chatbot</strong>: "ISW029 – Desenvolvimento Web II é uma disciplina do 2º semestre que avança no desenvolvimento web com frameworks JavaScript modernos como React, Vue.js ou Angular, além de trabalhar com APIs RESTful e arquitetura frontend."</p>
-<hr />
-<h3 id="interacao-5"><strong>Interação 5</strong></h3>
-<p><strong>Usuário</strong>: "O que é MongoDB e em qual semestre é estudado?"</p>
-<p><strong>Chatbot</strong>: "MongoDB é um banco de dados NoSQL estudado na disciplina IBD016 – Banco de Dados Não Relacional, oferecida no 3º semestre do curso DSM. A disciplina aborda modelagem de dados não relacionais, escalabilidade e performance em bancos NoSQL como MongoDB, Redis e Cassandra."</p>
-<hr />
-<h2 id="evidencias">📸 Evidências</h2>
-<h3 id="ingest">Ingest</h3>
-<p><img alt="Ingest" src="./prints/ingest.png" /></p>
-<h3 id="question">Question</h3>
-<p><img alt="Question" src="./prints/question.png" /></p>
-<hr />
-<h2 id="tecnologias-utilizadas">📦 Tecnologias Utilizadas</h2>
-<ul>
-<li><strong>Python 3.8+</strong></li>
-<li><strong>FastAPI</strong>: Framework web assíncrono</li>
-<li><strong>Transformers (Hugging Face)</strong>: LLM Flan-T5</li>
-<li><strong>Sentence-Transformers</strong>: Embeddings semânticos</li>
-<li><strong>FAISS</strong>: Busca vetorial eficiente</li>
-<li><strong>PyTorch</strong>: Backend de deep learning</li>
-<li><strong>Uvicorn</strong>: Servidor ASGI</li>
-</ul>
-<hr />
-<h2 id="autor">👨‍💻 Autor</h2>
-<p>Projeto desenvolvido como atividade da disciplina de Processamento de Linguagem Natural (PLN).</p>
-<p><strong>Repositório</strong>: <a href="https://github.com/lucasdwn/pln-atv1">lucasdwn/pln-atv1</a></p>
+✅ Pré-ingest concluído! X documentos indexados.</code></pre>
+        
+        <p>A API estará disponível em: <code>http://localhost:8000</code></p>
+    </section>
+    
     <hr>
-    <p style="text-align: center; color: #95a5a6; font-size: 0.9em;">
-        Para converter este HTML em PDF, abra no navegador e use Ctrl+P (Imprimir) → Salvar como PDF
-    </p>
+    
+    <section id="utilizar" class="section">
+        <h2>💡 Como Utilizar</h2>
+        
+        <h3>Fazer Perguntas (Endpoint /ask)</h3>
+        <p>O sistema já vem com a base DSM pré-carregada. Basta fazer perguntas!</p>
+        
+        <p><strong>Exemplo de requisição:</strong></p>
+        <div class="code-title">HTTP</div>
+        <pre><code>POST http://localhost:8000/ask
+Content-Type: application/json
+
+{
+    "question": "Quais são as disciplinas do 1º semestre?"
+}</code></pre>
+        
+        <p><strong>Mais exemplos estão disponíveis no arquivo <code>request.http</code></strong></p>
+        
+        <h3>Adicionar Novos Dados (Endpoint /ingest) - Opcional</h3>
+        <p>Caso queira adicionar informações adicionais:</p>
+        <div class="code-title">HTTP</div>
+        <pre><code>POST http://localhost:8000/ingest
+Content-Type: application/json
+
+{
+    "text": "Texto adicional sobre o curso DSM..."
+}</code></pre>
+        
+        <h3>Verificar Status (Endpoint /health)</h3>
+        <div class="code-title">HTTP</div>
+        <pre><code>GET http://localhost:8000/health</code></pre>
+    </section>
+    
+    <hr>
+    
+    <section id="dialogo" class="section">
+        <h2>💬 Exemplo de Diálogo (5 Interações)</h2>
+        
+        <div class="interaction">
+            <h3>Interação 1</h3>
+            <p class="user-question"><strong>Usuário:</strong> "Quais são as disciplinas do 1º semestre do curso DSM?"</p>
+            <p class="bot-answer"><strong>Chatbot:</strong> "O 1º semestre do curso DSM possui 6 disciplinas: IAL010 – Algoritmos e Lógica de Programação, ISO011 – Sistemas Operacionais e Redes de Computadores, IBD014 – Modelagem de Banco de Dados, ISW028 – Desenvolvimento Web I, IES011 – Engenharia de Software I, e ISW031 – Design Digital."</p>
+        </div>
+        
+        <div class="interaction">
+            <h3>Interação 2</h3>
+            <p class="user-question"><strong>Usuário:</strong> "O que é ensinado em Algoritmos e Lógica de Programação?"</p>
+            <p class="bot-answer"><strong>Chatbot:</strong> "IAL010 – Algoritmos e Lógica de Programação é a disciplina fundamental que ensina os conceitos básicos de algoritmos, estruturas de controle, variáveis e lógica de programação. É a base para o desenvolvimento de software no curso."</p>
+        </div>
+        
+        <div class="interaction">
+            <h3>Interação 3</h3>
+            <p class="user-question"><strong>Usuário:</strong> "Quais disciplinas de banco de dados tem no curso?"</p>
+            <p class="bot-answer"><strong>Chatbot:</strong> "O curso DSM possui três disciplinas de banco de dados: IBD014 – Modelagem de Banco de Dados no 1º semestre, que ensina diagrama entidade-relacionamento e normalização; IBD015 – Banco de Dados Relacional no 2º semestre, focado em SQL e PostgreSQL; e IBD016 – Banco de Dados Não Relacional no 3º semestre, que estuda MongoDB e bancos NoSQL."</p>
+        </div>
+        
+        <div class="interaction">
+            <h3>Interação 4</h3>
+            <p class="user-question"><strong>Usuário:</strong> "O que é estudado em Desenvolvimento Web II?"</p>
+            <p class="bot-answer"><strong>Chatbot:</strong> "ISW029 – Desenvolvimento Web II é uma disciplina do 2º semestre que avança no desenvolvimento web com frameworks JavaScript modernos como React, Vue.js ou Angular, além de trabalhar com APIs RESTful e arquitetura frontend."</p>
+        </div>
+        
+        <div class="interaction">
+            <h3>Interação 5</h3>
+            <p class="user-question"><strong>Usuário:</strong> "O que é MongoDB e em qual semestre é estudado?"</p>
+            <p class="bot-answer"><strong>Chatbot:</strong> "MongoDB é um banco de dados NoSQL estudado na disciplina IBD016 – Banco de Dados Não Relacional, oferecida no 3º semestre do curso DSM. A disciplina aborda modelagem de dados não relacionais, escalabilidade e performance em bancos NoSQL como MongoDB, Redis e Cassandra."</p>
+        </div>
+    </section>
+    
+    <hr>
+    
+    <section id="evidencias" class="section">
+        <h2>📸 Evidências</h2>
+        
+        <div class="evidence">
+            <h3>Pré-ingest Automático</h3>
+            <p>O sistema carrega automaticamente a base de conhecimento DSM na inicialização.</p>
+            <img src="./prints/ingest.png" alt="Ingest">
+        </div>
+        
+        <div class="evidence">
+            <h3>Pergunta 1 - Disciplinas do 1º Semestre</h3>
+            <img src="./prints/question.png" alt="Question">
+        </div>
+        
+        <div class="evidence">
+            <h3>Pergunta 2 - Algoritmos e Lógica de Programação</h3>
+            <img src="./prints/ask2.png" alt="Ask 2">
+        </div>
+        
+        <div class="evidence">
+            <h3>Pergunta 3 - Disciplinas de Banco de Dados</h3>
+            <img src="./prints/ask3.png" alt="Ask 3">
+        </div>
+        
+        <div class="evidence">
+            <h3>Pergunta 4 - Desenvolvimento Web II</h3>
+            <img src="./prints/ask4.png" alt="Ask 4">
+        </div>
+        
+        <div class="evidence">
+            <h3>Pergunta 5 - MongoDB</h3>
+            <img src="./prints/ask5.png" alt="Ask 5">
+        </div>
+    </section>
+    
+    <hr>
+    
+    <section class="section">
+        <h2>📦 Tecnologias Utilizadas</h2>
+        <div class="tech-list">
+            <ul>
+                <li><strong>Python 3.8+</strong></li>
+                <li><strong>FastAPI</strong>: Framework web assíncrono</li>
+                <li><strong>Transformers (Hugging Face)</strong>: LLM Flan-T5</li>
+                <li><strong>Sentence-Transformers</strong>: Embeddings semânticos</li>
+                <li><strong>FAISS</strong>: Busca vetorial eficiente</li>
+                <li><strong>PyTorch</strong>: Backend de deep learning</li>
+                <li><strong>Uvicorn</strong>: Servidor ASGI</li>
+            </ul>
+        </div>
+    </section>
+    
+    <hr>
+    
+    <section class="section">
+        <h2>👨‍💻 Autor</h2>
+        <p>Projeto desenvolvido como atividade da disciplina de Processamento de Linguagem Natural (PLN).</p>
+        <p><strong>Repositório:</strong> <a href="https://github.com/lucasdwn/pln-atv1" target="_blank">lucasdwn/pln-atv1</a></p>
+    </section>
+    
+    <div class="footer no-print">
+        <hr>
+        <p><strong>💡 Dica:</strong> Para salvar como PDF, pressione <code>Ctrl+P</code> e selecione "Salvar como PDF"</p>
+        <p style="margin-top: 10px; color: #bdc3c7; font-size: 0.85em;">Documento gerado automaticamente • Dezembro 2025</p>
+    </div>
 </body>
 </html>

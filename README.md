@@ -258,11 +258,25 @@ GET http://localhost:8000/health
 
 ## 📸 Evidências
 
-### Ingest
+### Pré-ingest Automático
+O sistema carrega automaticamente a base de conhecimento DSM na inicialização.
+
 ![Ingest](./prints/ingest.png)
 
-### Question
+### Pergunta 1 - Disciplinas do 1º Semestre
 ![Question](./prints/question.png)
+
+### Pergunta 2 - Algoritmos e Lógica de Programação
+![Ask 2](./prints/ask2.png)
+
+### Pergunta 3 - Disciplinas de Banco de Dados
+![Ask 3](./prints/ask3.png)
+
+### Pergunta 4 - Desenvolvimento Web II
+![Ask 4](./prints/ask4.png)
+
+### Pergunta 5 - MongoDB
+![Ask 5](./prints/ask5.png)
 
 ---
 
