@@ -1,17 +1,84 @@
 
-### ingest
+### Ingest 1 - Grade 1º Semestre
 POST http://localhost:8000/ingest
 Content-Type: application/json
 
 {
-    "status": "added",
-    "text": "O curso de PLN ensina técnicas de processamento de linguagem natural e uso de modelos de IA como LLMs para chatbots."
+    "text": "1º Semestre do curso DSM: IAL010 – Algoritmos e Lógica de Programação ensina conceitos básicos de algoritmos e lógica. ISO011 – Sistemas Operacionais e Redes de Computadores aborda fundamentos de SO e redes. IBD014 – Modelagem de Banco de Dados introduz modelagem ER e normalização. ISW028 – Desenvolvimento Web I ensina HTML5, CSS3 e JavaScript. IES011 – Engenharia de Software I aborda metodologias de desenvolvimento. ISW031 – Design Digital foca em UX e prototipação."
 }
 
-### ask
+### Ingest 2 - Grade 2º Semestre
+POST http://localhost:8000/ingest
+Content-Type: application/json
+
+{
+    "text": "2º Semestre do curso DSM: IBD015 – Banco de Dados Relacional aprofunda SQL e SGBDs como MySQL. IED005 – Estrutura de Dados ensina listas, pilhas, filas e árvores. ILP036 – Técnicas de Programação I explora POO e padrões de projeto. IES012 – Engenharia de Software II foca em metodologias ágeis como Scrum. ISW029 – Desenvolvimento Web II trabalha com frameworks como React e APIs RESTful. MAT019 – Matemática para Computação aborda lógica matemática e grafos."
+}
+
+### Ingest 3 - Grade 3º Semestre
+POST http://localhost:8000/ingest
+Content-Type: application/json
+
+{
+    "text": "3º Semestre do curso DSM: IBD016 – Banco de Dados Não Relacional estuda NoSQL como MongoDB e Redis. ISW030 – Desenvolvimento Web III aborda desenvolvimento full-stack com Node.js e Express. ILP037 – Técnicas de Programação II aprofunda programação funcional e concorrência."
+}
+
+### Ingest 4 - Detalhes Algoritmos
+POST http://localhost:8000/ingest
+Content-Type: application/json
+
+{
+    "text": "IAL010 – Algoritmos e Lógica de Programação é a disciplina fundamental do 1º semestre que ensina os conceitos básicos de algoritmos, estruturas de controle, variáveis e lógica de programação. É a base para o desenvolvimento de software no curso DSM."
+}
+
+### Ingest 5 - Detalhes Banco de Dados
+POST http://localhost:8000/ingest
+Content-Type: application/json
+
+{
+    "text": "O curso DSM tem três disciplinas de banco de dados: IBD014 (Modelagem) no 1º semestre ensina diagrama ER e normalização, IBD015 (Relacional) no 2º semestre aprofunda SQL e PostgreSQL, e IBD016 (Não Relacional) no 3º semestre estuda MongoDB e bancos NoSQL."
+}
+
+###
+### PERGUNTAS - ASK
+###
+
+### Ask 1 - Perguntar sobre disciplinas do 1º semestre
 POST http://localhost:8000/ask
 Content-Type: application/json
 
 {
-    "question": "O que é o curso de PLN?"
+    "question": "Quais são as disciplinas do 1º semestre do curso DSM?"
+}
+
+### Ask 2 - Perguntar sobre Algoritmos
+POST http://localhost:8000/ask
+Content-Type: application/json
+
+{
+    "question": "O que é ensinado em Algoritmos e Lógica de Programação?"
+}
+
+### Ask 3 - Perguntar sobre Banco de Dados
+POST http://localhost:8000/ask
+Content-Type: application/json
+
+{
+    "question": "Quais disciplinas de banco de dados tem no curso DSM?"
+}
+
+### Ask 4 - Perguntar sobre 2º semestre
+POST http://localhost:8000/ask
+Content-Type: application/json
+
+{
+    "question": "O que é estudado em Desenvolvimento Web II?"
+}
+
+### Ask 5 - Perguntar sobre 3º semestre
+POST http://localhost:8000/ask
+Content-Type: application/json
+
+{
+    "question": "O que é MongoDB e em qual semestre é estudado?"
 }

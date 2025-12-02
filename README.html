@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot RAG - Grade Curricular DSM</title>
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 2cm;
+            }
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #95a5a6;
+            padding-bottom: 8px;
+            margin-top: 25px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+            page-break-inside: avoid;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        blockquote {
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin: 15px 0;
+            color: #555;
+            font-style: italic;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #ecf0f1;
+            margin: 30px 0;
+        }
+        strong {
+            color: #2c3e50;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="chatbot-rag-grade-curricular-dsm">Chatbot RAG - Grade Curricular DSM</h1>
+<p>Sistema de chatbot inteligente com RAG (Retrieval-Augmented Generation) para responder perguntas sobre a grade curricular do curso de Desenvolvimento de Software Multiplataforma (DSM).</p>
+<h2 id="indice">📋 Índice</h2>
+<ul>
+<li><a href="#sobre-o-projeto">Sobre o Projeto</a></li>
+<li><a href="#modelo-de-linguagem-llm">Modelo de Linguagem (LLM)</a></li>
+<li><a href="#implementação-do-rag">Implementação do RAG</a></li>
+<li><a href="#limitações">Limitações</a></li>
+<li><a href="#como-rodar-o-projeto">Como Rodar o Projeto</a></li>
+<li><a href="#como-utilizar">Como Utilizar</a></li>
+<li><a href="#exemplo-de-diálogo">Exemplo de Diálogo</a></li>
+<li><a href="#evidências">Evidências</a></li>
+</ul>
+<hr />
+<h2 id="sobre-o-projeto">🎯 Sobre o Projeto</h2>
+<p>Este projeto implementa um chatbot baseado em RAG (Retrieval-Augmented Generation) que utiliza:
+- <strong>LLM local</strong>: Google Flan-T5 Large para geração de respostas
+- <strong>Embeddings</strong>: sentence-transformers para busca semântica
+- <strong>Banco vetorial</strong>: FAISS para indexação e recuperação eficiente
+- <strong>API REST</strong>: FastAPI para interface de comunicação</p>
+<p>O sistema carrega automaticamente a base de conhecimento sobre a grade DSM e responde perguntas de forma contextualizada.</p>
+<hr />
+<h2 id="modelo-de-linguagem-llm">🤖 Modelo de Linguagem (LLM)</h2>
+<h3 id="modelo-escolhido-google-flan-t5-large">Modelo Escolhido: <strong>Google Flan-T5 Large</strong></h3>
+<p><strong>Por que Flan-T5?</strong></p>
+<ol>
+<li><strong>Gratuito e Open Source</strong>: Totalmente gratuito, sem custos de API</li>
+<li><strong>Execução Local</strong>: Roda localmente, garantindo privacidade dos dados</li>
+<li><strong>Otimizado para Instruções</strong>: Treinado especificamente para seguir instruções (instruction-tuned)</li>
+<li><strong>Tamanho Balanceado</strong>: 780M parâmetros - bom equilíbrio entre qualidade e performance</li>
+<li><strong>Multilíngue</strong>: Suporta português, ideal para conteúdo em PT-BR</li>
+<li><strong>Baixa Latência</strong>: Respostas rápidas mesmo em hardware comum</li>
+</ol>
+<p><strong>Especificações Técnicas:</strong>
+- <strong>Arquitetura</strong>: Transformer encoder-decoder (T5)
+- <strong>Parâmetros</strong>: 780 milhões
+- <strong>Contexto</strong>: Até 512 tokens de entrada
+- <strong>Framework</strong>: Hugging Face Transformers + PyTorch</p>
+<hr />
+<h2 id="implementacao-do-rag">🔍 Implementação do RAG</h2>
+<p>O sistema RAG (Retrieval-Augmented Generation) foi implementado em 3 etapas:</p>
+<h3 id="1-indexacao-pre-ingest-automatico">1. <strong>Indexação (Pré-ingest Automático)</strong></h3>
+<p>Na inicialização, o sistema:
+- Carrega o arquivo <code>dsm_data.txt</code> com a grade curricular
+- Divide o conteúdo em chunks inteligentes:
+  - Seções por semestre (1º, 2º, 3º)
+  - Disciplinas individuais com descrições
+- Gera embeddings usando <code>sentence-transformers/all-MiniLM-L6-v2</code>
+- Indexa no FAISS (IndexFlatIP com inner product)</p>
+<pre><code class="language-python"># Exemplo simplificado
+vec = embedder.encode([chunk], normalize_embeddings=True)
+index.add(vec)
+documents.append(chunk)
+</code></pre>
+<h3 id="2-recuperacao-retrieval">2. <strong>Recuperação (Retrieval)</strong></h3>
+<p>Quando uma pergunta chega:
+- Converte a pergunta em embedding vetorial
+- Busca no FAISS o documento mais similar (k=1)
+- Recupera o contexto relevante da base de conhecimento</p>
+<pre><code class="language-python">q_vec = embedder.encode([question], normalize_embeddings=True)
+D, I = index.search(q_vec, 1)  # Top-1 similar
+context = documents[I[0][0]]
+</code></pre>
+<h3 id="3-geracao-augmented-generation">3. <strong>Geração (Augmented Generation)</strong></h3>
+<ul>
+<li>Monta um prompt estruturado com contexto + pergunta</li>
+<li>Envia para o Flan-T5 Large</li>
+<li>Gera resposta contextualizada baseada no conhecimento recuperado</li>
+</ul>
+<pre><code class="language-python">prompt = f&quot;&quot;&quot;Use o contexto abaixo para responder à pergunta de forma clara e direta.
+
+Contexto:
+{context}
+
+Pergunta:
+{question}
+
+Resposta:&quot;&quot;&quot;
+</code></pre>
+<p><strong>Parâmetros de Geração:</strong>
+- <code>max_new_tokens=200</code>: Respostas concisas
+- <code>temperature=0.7</code>: Equilíbrio entre criatividade e precisão
+- <code>top_p=0.9</code>: Nucleus sampling para qualidade</p>
+<hr />
+<h2 id="limitacoes">⚠️ Limitações</h2>
+<h3 id="1-capacidade-do-modelo">1. <strong>Capacidade do Modelo</strong></h3>
+<ul>
+<li>Flan-T5 Large tem 780M parâmetros (menor que GPT-3.5/GPT-4)</li>
+<li>Pode gerar respostas menos sofisticadas em perguntas complexas</li>
+<li>Limitado a 512 tokens de contexto</li>
+</ul>
+<h3 id="2-busca-vetorial">2. <strong>Busca Vetorial</strong></h3>
+<ul>
+<li>Recupera apenas 1 documento (k=1) por consulta</li>
+<li>Pode perder informações relevantes em outros chunks</li>
+<li>Não faz fusão de múltiplas fontes</li>
+</ul>
+<h3 id="3-base-de-conhecimento">3. <strong>Base de Conhecimento</strong></h3>
+<ul>
+<li>Limitada às informações no <code>dsm_data.txt</code></li>
+<li>Não tem conhecimento além da grade curricular fornecida</li>
+<li>Não se atualiza automaticamente</li>
+</ul>
+<h3 id="4-performance">4. <strong>Performance</strong></h3>
+<ul>
+<li>Primeira execução baixa modelos (~3GB) - pode demorar</li>
+<li>Requer pelo menos 4GB de RAM disponível</li>
+<li>CPU-only pode ser lento (GPU recomendada)</li>
+</ul>
+<h3 id="5-idioma">5. <strong>Idioma</strong></h3>
+<ul>
+<li>Apesar de multilíngue, pode misturar inglês/português ocasionalmente</li>
+<li>Melhor desempenho em inglês que português</li>
+</ul>
+<h3 id="6-escalabilidade">6. <strong>Escalabilidade</strong></h3>
+<ul>
+<li>FAISS em memória - perde dados ao reiniciar</li>
+<li>Não persiste o índice vetorial</li>
+<li>Não suporta múltiplos usuários concorrentes eficientemente</li>
+</ul>
+<hr />
+<h2 id="como-rodar-o-projeto">🚀 Como Rodar o Projeto</h2>
+<h3 id="1-criar-ambiente-virtual">1. Criar Ambiente Virtual</h3>
+<pre><code class="language-powershell"># Criar ambiente virtual
+python -m venv .venv
+
+# Ativar ambiente
+.venv\Scripts\activate    # Windows (PowerShell)
+</code></pre>
+<h3 id="2-instalar-dependencias">2. Instalar Dependências</h3>
+<pre><code class="language-powershell">pip install -r requirements.txt
+</code></pre>
+<p><strong>Nota</strong>: A primeira execução baixará os modelos (~3GB). Aguarde a conclusão.</p>
+<h3 id="3-rodar-aplicacao">3. Rodar Aplicação</h3>
+<pre><code class="language-powershell">uvicorn app:app --reload --port 8000
+</code></pre>
+<p>Você verá as mensagens:</p>
+<pre><code>🔄 Carregando modelo...
+📚 Carregando dados do arquivo dsm_data.txt...
+✅ Pré-ingest concluído! X documentos indexados.
+</code></pre>
+<p>A API estará disponível em: <code>http://localhost:8000</code></p>
+<hr />
+<h2 id="como-utilizar">💡 Como Utilizar</h2>
+<h3 id="fazer-perguntas-endpoint-ask">Fazer Perguntas (Endpoint /ask)</h3>
+<p>O sistema já vem com a base DSM pré-carregada. Basta fazer perguntas!</p>
+<p><strong>Exemplo de requisição:</strong></p>
+<pre><code class="language-http">POST http://localhost:8000/ask
+Content-Type: application/json
+
+{
+    &quot;question&quot;: &quot;Quais são as disciplinas do 1º semestre?&quot;
+}
+</code></pre>
+<p><strong>Mais exemplos estão disponíveis no arquivo <code>request.http</code></strong></p>
+<h3 id="adicionar-novos-dados-endpoint-ingest-opcional">Adicionar Novos Dados (Endpoint /ingest) - Opcional</h3>
+<p>Caso queira adicionar informações adicionais:</p>
+<pre><code class="language-http">POST http://localhost:8000/ingest
+Content-Type: application/json
+
+{
+    &quot;text&quot;: &quot;Texto adicional sobre o curso DSM...&quot;
+}
+</code></pre>
+<h3 id="verificar-status-endpoint-health">Verificar Status (Endpoint /health)</h3>
+<pre><code class="language-http">GET http://localhost:8000/health
+</code></pre>
+<hr />
+<h2 id="exemplo-de-dialogo-5-interacoes">💬 Exemplo de Diálogo (5 Interações)</h2>
+<h3 id="interacao-1"><strong>Interação 1</strong></h3>
+<p><strong>Usuário</strong>: "Quais são as disciplinas do 1º semestre do curso DSM?"</p>
+<p><strong>Chatbot</strong>: "O 1º semestre do curso DSM possui 6 disciplinas: IAL010 – Algoritmos e Lógica de Programação, ISO011 – Sistemas Operacionais e Redes de Computadores, IBD014 – Modelagem de Banco de Dados, ISW028 – Desenvolvimento Web I, IES011 – Engenharia de Software I, e ISW031 – Design Digital."</p>
+<hr />
+<h3 id="interacao-2"><strong>Interação 2</strong></h3>
+<p><strong>Usuário</strong>: "O que é ensinado em Algoritmos e Lógica de Programação?"</p>
+<p><strong>Chatbot</strong>: "IAL010 – Algoritmos e Lógica de Programação é a disciplina fundamental que ensina os conceitos básicos de algoritmos, estruturas de controle, variáveis e lógica de programação. É a base para o desenvolvimento de software no curso."</p>
+<hr />
+<h3 id="interacao-3"><strong>Interação 3</strong></h3>
+<p><strong>Usuário</strong>: "Quais disciplinas de banco de dados tem no curso?"</p>
+<p><strong>Chatbot</strong>: "O curso DSM possui três disciplinas de banco de dados: IBD014 – Modelagem de Banco de Dados no 1º semestre, que ensina diagrama entidade-relacionamento e normalização; IBD015 – Banco de Dados Relacional no 2º semestre, focado em SQL e PostgreSQL; e IBD016 – Banco de Dados Não Relacional no 3º semestre, que estuda MongoDB e bancos NoSQL."</p>
+<hr />
+<h3 id="interacao-4"><strong>Interação 4</strong></h3>
+<p><strong>Usuário</strong>: "O que é estudado em Desenvolvimento Web II?"</p>
+<p><strong>Chatbot</strong>: "ISW029 – Desenvolvimento Web II é uma disciplina do 2º semestre que avança no desenvolvimento web com frameworks JavaScript modernos como React, Vue.js ou Angular, além de trabalhar com APIs RESTful e arquitetura frontend."</p>
+<hr />
+<h3 id="interacao-5"><strong>Interação 5</strong></h3>
+<p><strong>Usuário</strong>: "O que é MongoDB e em qual semestre é estudado?"</p>
+<p><strong>Chatbot</strong>: "MongoDB é um banco de dados NoSQL estudado na disciplina IBD016 – Banco de Dados Não Relacional, oferecida no 3º semestre do curso DSM. A disciplina aborda modelagem de dados não relacionais, escalabilidade e performance em bancos NoSQL como MongoDB, Redis e Cassandra."</p>
+<hr />
+<h2 id="evidencias">📸 Evidências</h2>
+<h3 id="ingest">Ingest</h3>
+<p><img alt="Ingest" src="./prints/ingest.png" /></p>
+<h3 id="question">Question</h3>
+<p><img alt="Question" src="./prints/question.png" /></p>
+<hr />
+<h2 id="tecnologias-utilizadas">📦 Tecnologias Utilizadas</h2>
+<ul>
+<li><strong>Python 3.8+</strong></li>
+<li><strong>FastAPI</strong>: Framework web assíncrono</li>
+<li><strong>Transformers (Hugging Face)</strong>: LLM Flan-T5</li>
+<li><strong>Sentence-Transformers</strong>: Embeddings semânticos</li>
+<li><strong>FAISS</strong>: Busca vetorial eficiente</li>
+<li><strong>PyTorch</strong>: Backend de deep learning</li>
+<li><strong>Uvicorn</strong>: Servidor ASGI</li>
+</ul>
+<hr />
+<h2 id="autor">👨‍💻 Autor</h2>
+<p>Projeto desenvolvido como atividade da disciplina de Processamento de Linguagem Natural (PLN).</p>
+<p><strong>Repositório</strong>: <a href="https://github.com/lucasdwn/pln-atv1">lucasdwn/pln-atv1</a></p>
+    <hr>
+    <p style="text-align: center; color: #95a5a6; font-size: 0.9em;">
+        Para converter este HTML em PDF, abra no navegador e use Ctrl+P (Imprimir) → Salvar como PDF
+    </p>
+</body>
+</html>

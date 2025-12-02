@@ -1,0 +1,52 @@
+GRADE CURRICULAR - CURSO DSM (DESENVOLVIMENTO DE SOFTWARE MULTIPLATAFORMA)
+
+=== 1º SEMESTRE ===
+
+IAL010 – Algoritmos e Lógica de Programação
+Disciplina fundamental que ensina os conceitos básicos de algoritmos, estruturas de controle, variáveis e lógica de programação. É a base para o desenvolvimento de software.
+
+ISO011 – Sistemas Operacionais e Redes de Computadores
+Estuda os fundamentos de sistemas operacionais como Windows, Linux e MacOS, além de conceitos de redes de computadores, protocolos TCP/IP e arquitetura cliente-servidor.
+
+IBD014 – Modelagem de Banco de Dados
+Introduz conceitos de modelagem de dados, diagrama entidade-relacionamento (ER), normalização e projeto de bancos de dados relacionais.
+
+ISW028 – Desenvolvimento Web I
+Apresenta tecnologias básicas para desenvolvimento web: HTML5, CSS3 e JavaScript. Ensina a criar páginas web responsivas e interativas.
+
+IES011 – Engenharia de Software I
+Aborda metodologias de desenvolvimento de software, levantamento de requisitos, análise de sistemas e princípios de qualidade de software.
+
+ISW031 – Design Digital
+Disciplina focada em design de interfaces, experiência do usuário (UX), design de interação e ferramentas de prototipação como Figma e Adobe XD.
+
+=== 2º SEMESTRE ===
+
+IBD015 – Banco de Dados – Relacional
+Aprofunda o estudo de bancos de dados relacionais, linguagem SQL, transações, procedures, triggers e otimização de consultas em SGBDs como MySQL e PostgreSQL.
+
+IED005 – Estrutura de Dados
+Ensina estruturas de dados fundamentais: listas, pilhas, filas, árvores, grafos e seus algoritmos de manipulação e busca.
+
+ILP036 – Técnicas de Programação I
+Disciplina que explora paradigmas de programação, programação orientada a objetos, padrões de projeto e boas práticas de codificação.
+
+IES012 – Engenharia de Software II
+Continua os estudos de engenharia de software com foco em metodologias ágeis como Scrum e Kanban, testes de software e gestão de projetos.
+
+ISW029 – Desenvolvimento Web II
+Avança no desenvolvimento web com frameworks JavaScript modernos como React, Vue.js ou Angular, APIs RESTful e arquitetura frontend.
+
+MAT019 – Matemática para Computação
+Aborda conceitos matemáticos aplicados à computação: lógica matemática, teoria dos conjuntos, grafos, probabilidade e estatística.
+
+=== 3º SEMESTRE ===
+
+IBD016 – Banco de Dados – Não Relacional
+Estuda bancos de dados NoSQL como MongoDB, Redis e Cassandra. Aborda modelagem de dados não relacionais, escalabilidade e performance.
+
+ISW030 – Desenvolvimento Web III
+Desenvolvimento web full-stack com Node.js, frameworks backend como Express ou NestJS, autenticação, autorização e deploy de aplicações.
+
+ILP037 – Técnicas de Programação II
+Aprofunda técnicas avançadas de programação, incluindo programação funcional, concorrência, paralelismo e otimização de código.
